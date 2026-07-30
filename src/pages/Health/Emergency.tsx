@@ -244,7 +244,7 @@ const Emergency = () => {
         alerts.sort((a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime());
         setMeshAlerts(alerts);
       } catch (err) {
-        console.error("Failed to load mesh alerts:", err);
+        console.warn("Failed to load mesh alerts:", err);
       }
     };
 
@@ -299,7 +299,7 @@ const Emergency = () => {
           .maybeSingle();
 
         if (error) {
-          console.error("Error loading emergency profile info:", error);
+          console.warn("Error loading emergency profile info:", error);
         } else if (data) {
           const key = await whenEncryptionReady();
           const decryptedFullName = await decryptProfileField(data.full_name, key);
@@ -314,7 +314,7 @@ const Emergency = () => {
         }
 
       } catch (err) {
-        console.error("Error loading profile:", err);
+        console.warn("Error loading profile:", err);
       } finally {
         setProfileLoading(false);
       }
@@ -370,7 +370,7 @@ const Emergency = () => {
         setTimeout(() => setAlertStatus("idle"), 5000);
       } catch (err) {
         const errorMessage = err instanceof Error ? err.message : "An unexpected error occurred.";
-        console.error("Failed to broadcast alert:", err);
+        console.warn("Failed to broadcast alert:", err);
         setAlertStatus("error");
         showError("Broadcast Failed", errorMessage);
         setTimeout(() => setAlertStatus("idle"), 5000);
@@ -390,7 +390,7 @@ const Emergency = () => {
         await executeMeshAlert(latitude, longitude);
       },
       async (error) => {
-        console.error("Geolocation failed:", error);
+        console.warn("Geolocation failed:", error);
         setAlertProgressMessage("Unable to get location. Starting broadcast without coordinates...");
         await executeMeshAlert(null, null);
       },
@@ -415,7 +415,7 @@ const Emergency = () => {
         }
       })
       .catch((err) => {
-        console.error("Geolocation fetch failed:", err);
+        console.warn("Geolocation fetch failed:", err);
       });
   }, []);
 
@@ -457,7 +457,7 @@ const Emergency = () => {
       oscillator.start(ctx.currentTime);
       oscillator.stop(ctx.currentTime + 0.4);
     } catch (err) {
-      console.error("Audio beep failed:", err);
+      console.warn("Audio beep failed:", err);
     }
   };
 
